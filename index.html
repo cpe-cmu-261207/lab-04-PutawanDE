@@ -6,14 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="script.js" defer></script>
     <title>Lab 04</title>
-    <!-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> -->
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      .hide {
+        display: none;
+      }
+
+      .task-name-wrapper:hover + .hide {
+        display: block;
+      }
+    </style>
   </head>
 
   <body>
-    <h1>Minimal Todo List</h1>
-    <input id="taskInput" type="text" />
-    <button id="addBtn">+</button>
-    <div id="toDoList"></div>
-    <div id="doneTasksList"></div>
+    <div class="mx-auto flex flex-col max-w-screen-md px-5 py-5">
+      <h1>Minimal Todo List</h1>
+      <br />
+      <div class="flex space-x-5">
+        <input
+          id="taskInput"
+          class="border-grey-400 border-2 flex-grow"
+          type="text"
+        />
+        <button id="addBtn" class="border-2 border-black w-10 focus:ring">
+          +
+        </button>
+      </div>
+      <div id="toDoList" class="py-5 space-y-2"></div>
+      <div id="doneTasksList"></div>
+    </div>
   </body>
 </html>

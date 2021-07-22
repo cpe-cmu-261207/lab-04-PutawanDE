@@ -3,8 +3,8 @@ const addTaskBtn = document.querySelector("#addBtn");
 const toDoList = document.querySelector("#toDoList");
 const doneTasksList = document.querySelector("#doneTasksList");
 
-const toDos = [];
-const doneTasks = [];
+let toDos = [];
+let doneTasks = [];
 
 const toDoListKey = "toDos";
 const doneTasksListKey = "doneTasks";
@@ -43,19 +43,19 @@ const addDoneTask = (taskVal) => {
 }
 
 const populateListsFromStorage = () => {
-    const retrievedToDos = JSON.parse(localStorage.getItem(toDoListKey));
-    const retrievedDoneTasks = JSON.parse(localStorage.getItem(doneTasksListKey));
+    const savedToDos = JSON.parse(localStorage.getItem(toDoListKey));
+    const savedDoneTasks = JSON.parse(localStorage.getItem(doneTasksListKey));
 
-    if (retrievedToDos !== null) {
-        retrievedToDos.reverse().forEach(task => {
-            toDos.unshift(task);
+    if (savedToDos !== null) {
+        toDos = [...savedToDos];
+        savedToDos.reverse().forEach(task => {
             addTaskToDoListUI(task);
         });
     }
 
-    if (retrievedDoneTasks !== null) {
-        retrievedDoneTasks.reverse().forEach((task) => {
-            doneTasks.unshift(task);
+    if (savedDoneTasks !== null) {
+        doneTasks = [...savedDoneTasks];
+        savedDoneTasks.reverse().forEach((task) => {
             addTaskDoneListUI(task);
         });
     }
@@ -71,24 +71,34 @@ const updateListStorage = (key) => {
 }
 
 const addTaskToDoListUI = (taskVal) => {
-    const taskSpan = document.createElement("span");
-    taskSpan.innerHTML = taskVal;
+    const taskDiv = document.createElement("div");
+    const taskName = document.createElement("span");
+    const taskBtns = document.createElement("div");
+
+    taskName.innerHTML = taskVal;
+    taskName.className = "flex-grow task-name-wrapper";
+    taskBtns.className = "space-x-5 hide";
 
     const doneBtn = document.createElement("button");
     doneBtn.innerHTML = "done";
 
-    doneBtn.addEventListener("click", () => finishToDoItem(toDoList, taskSpan));
+    doneBtn.addEventListener("click", () => finishToDoItem(toDoList, taskDiv));
 
     const delBtn = document.createElement("button");
     delBtn.innerHTML = "delete";
 
-    delBtn.addEventListener("click", () => deleteTodoItem(toDoList, taskSpan));
+    delBtn.addEventListener("click", () => deleteTodoItem(toDoList, taskDiv));
 
-    taskSpan.append(doneBtn);
-    taskSpan.append(delBtn);
-    taskSpan.append(document.createElement("br"));
+    taskBtns.append(doneBtn);
+    taskBtns.append(delBtn);
 
-    toDoList.insertBefore(taskSpan, toDoList.childNodes[0]);
+    taskDiv.className = "border-b-2 border-gray-400 flex";
+
+    taskDiv.append(taskName);
+    taskDiv.append(taskBtns);
+    taskDiv.append(document.createElement("br"));
+
+    toDoList.insertBefore(taskDiv, toDoList.childNodes[0]);
 }
 
 const addTaskDoneListUI = (taskVal) => {
@@ -100,8 +110,8 @@ const addTaskDoneListUI = (taskVal) => {
     doneTasksList.insertBefore(taskSpan, doneTasksList.childNodes[0]);
 }
 
-const finishToDoItem = (taskList, taskSpan) => {
-    const index = Array.prototype.indexOf.call(taskList.children, taskSpan);
+const finishToDoItem = (taskList, taskElem) => {
+    const index = Array.prototype.indexOf.call(taskList.children, taskElem);
     const toFinishVal = toDos[index];
 
     toDos.splice(index, 1);
@@ -109,16 +119,16 @@ const finishToDoItem = (taskList, taskSpan) => {
     addDoneTask(toFinishVal);
 
     // console.log(doneTasks);
-    taskList.removeChild(taskSpan);
+    taskList.removeChild(taskElem);
 }
 
-const deleteTodoItem = (taskList, taskSpan) => {
-    const index = Array.prototype.indexOf.call(taskList.children, taskSpan);
+const deleteTodoItem = (taskList, taskElem) => {
+    const index = Array.prototype.indexOf.call(taskList.children, taskElem);
     toDos.splice(index, 1);
     updateListStorage(toDoListKey);
     // console.log(toDos);  
 
-    taskList.removeChild(taskSpan);
+    taskList.removeChild(taskElem);
 }
 
 populateListsFromStorage();
