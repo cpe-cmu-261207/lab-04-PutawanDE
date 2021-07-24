@@ -6,38 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="script.js" defer></script>
     <title>Lab 04</title>
+
     <link
       href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
       rel="stylesheet"
     />
 
-    <style>
-      .hide {
-        display: none;
-      }
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@300&display=swap"
+      rel="stylesheet"
+    />
 
-      .task-name-wrapper:hover + .hide {
-        display: block;
-      }
-    </style>
+    <link href="/stylesheets/main.css" rel="stylesheet" />
   </head>
 
-  <body>
-    <div class="mx-auto flex flex-col max-w-screen-md px-5 py-5">
-      <h1>Minimal Todo List</h1>
+  <body class="text-white">
+    <div class="mx-auto flex flex-col max-w-screen-md px-5 py-5 space-y-2">
+      <!-- header -->
+      <div class="flex flex-wrap justify-between">
+        <h1>to do list</h1>
+        <i>stop procrastinating</i>
+      </div>
       <br />
+
+      <!-- add task -->
       <div class="flex space-x-5">
         <input
           id="taskInput"
-          class="border-grey-400 border-2 flex-grow"
+          placeholder="What do you have to do?..."
+          class="
+            border-blue-500 border-b-4
+            flex-grow
+            text-black
+            p-1
+            rounded-sm
+            flex-shrink
+            min-w-0
+          "
           type="text"
         />
-        <button id="addBtn" class="border-2 border-black w-10 focus:ring">
+        <button
+          id="addBtn"
+          class="
+            text-black
+            bg-white
+            rounded-sm
+            hover:bg-gray-200
+            w-10
+            focus:ring
+            add-btn
+          "
+        >
           +
         </button>
       </div>
-      <div id="toDoList" class="py-5 space-y-2"></div>
-      <div id="doneTasksList"></div>
+      <br />
+
+      <!-- task list -->
+      <div class="border-b-2 border-blue-500 py-0.5">
+        <h3>To Do</h3>
+      </div>
+      <div id="toDoList" class="space-y-2"></div>
+      <br />
+      <div class="border-b-2 border-green-400 py-0.5">
+        <h3>Done</h3>
+      </div>
+      <div id="doneTasksList" class="space-y-2"></div>
     </div>
   </body>
 </html>

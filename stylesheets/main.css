@@ -1,0 +1,28 @@
+body {
+  background-color: #121212;
+  font-family: "Prompt", sans-serif;
+}
+
+.add-btn {
+  min-width: 32px;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.done-tasks-wrapper {
+  background-color: #212121;
+}
+
+.todo-tasks-wrapper {
+  background-color: white;
+}
+
+.todo-tasks-wrapper:hover .hide {
+  visibility: visible;
+}
+
+.done-tasks-wrapper:hover .hide {
+  visibility: visible;
+}

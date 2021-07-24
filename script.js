@@ -1,7 +1,12 @@
 const taskInput = document.querySelector("#taskInput");
 const addTaskBtn = document.querySelector("#addBtn");
-const toDoList = document.querySelector("#toDoList");
-const doneTasksList = document.querySelector("#doneTasksList");
+const toDoListDiv = document.querySelector("#toDoList");
+const doneTasksListDiv = document.querySelector("#doneTasksList");
+
+const toDoDivClass = "todo-tasks-wrapper flex p-2 text-black rounded-sm transform hover:scale-x-110";
+const doneTasksDivClass = "done-tasks-wrapper flex p-2 rounded-sm transform";
+const taskNameClass = "flex-grow";
+const taskBtnClass = "space-x-5 hide";
 
 let toDos = [];
 let doneTasks = [];
@@ -76,42 +81,62 @@ const addTaskToDoListUI = (taskVal) => {
     const taskBtns = document.createElement("div");
 
     taskName.innerHTML = taskVal;
-    taskName.className = "flex-grow task-name-wrapper";
-    taskBtns.className = "space-x-5 hide";
+    taskName.className = taskNameClass;
+    taskBtns.className = taskBtnClass;
 
     const doneBtn = document.createElement("button");
-    doneBtn.innerHTML = "done";
+    doneBtn.innerHTML = "Done";
+    doneBtn.className = "text-green-400 hover:text-green-300";
 
-    doneBtn.addEventListener("click", () => finishToDoItem(toDoList, taskDiv));
+    doneBtn.addEventListener("click", () => finishToDoTask(toDoListDiv, taskDiv));
 
     const delBtn = document.createElement("button");
-    delBtn.innerHTML = "delete";
+    delBtn.innerHTML = "Del";
+    delBtn.className = "text-red-400 hover:text-red-300";
 
-    delBtn.addEventListener("click", () => deleteTodoItem(toDoList, taskDiv));
+    delBtn.addEventListener("click", () => deleteTodoTask(toDoListDiv, taskDiv));
 
     taskBtns.append(doneBtn);
     taskBtns.append(delBtn);
 
-    taskDiv.className = "border-b-2 border-gray-400 flex";
+    taskDiv.className = toDoDivClass;
 
     taskDiv.append(taskName);
     taskDiv.append(taskBtns);
     taskDiv.append(document.createElement("br"));
 
-    toDoList.insertBefore(taskDiv, toDoList.childNodes[0]);
+    toDoListDiv.insertBefore(taskDiv, toDoListDiv.childNodes[0]);
 }
 
 const addTaskDoneListUI = (taskVal) => {
-    const taskSpan = document.createElement("span");
-    taskSpan.innerHTML = taskVal;
-    taskSpan.style.textDecoration = "line-through";
+    const taskDiv = document.createElement("div");
+    const taskName = document.createElement("span");
+    const taskBtns = document.createElement("div");
 
-    taskSpan.append(document.createElement("br"));
-    doneTasksList.insertBefore(taskSpan, doneTasksList.childNodes[0]);
+    taskName.innerHTML = taskVal;
+    taskName.className = taskNameClass;
+    taskBtns.className = taskBtnClass;
+
+    const delBtn = document.createElement("button");
+    delBtn.innerHTML = "Del";
+    delBtn.className = "text-red-400 hover:text-red-300";
+
+    delBtn.addEventListener("click", () => deleteDoneTask(doneTasksListDiv, taskDiv));
+
+    taskBtns.append(delBtn);
+
+    taskDiv.style.textDecoration = "line-through";
+    taskDiv.className = doneTasksDivClass;
+
+    taskDiv.append(taskName);
+    taskDiv.append(taskBtns);
+    taskDiv.append(document.createElement("br"));
+
+    doneTasksListDiv.insertBefore(taskDiv, doneTasksListDiv.childNodes[0]);
 }
 
-const finishToDoItem = (taskList, taskElem) => {
-    const index = Array.prototype.indexOf.call(taskList.children, taskElem);
+const finishToDoTask = (taskListDiv, taskDiv) => {
+    const index = Array.prototype.indexOf.call(taskListDiv.children, taskDiv);
     const toFinishVal = toDos[index];
 
     toDos.splice(index, 1);
@@ -119,16 +144,24 @@ const finishToDoItem = (taskList, taskElem) => {
     addDoneTask(toFinishVal);
 
     // console.log(doneTasks);
-    taskList.removeChild(taskElem);
+    taskListDiv.removeChild(taskDiv);
 }
 
-const deleteTodoItem = (taskList, taskElem) => {
-    const index = Array.prototype.indexOf.call(taskList.children, taskElem);
+const deleteTodoTask = (taskListDiv, taskDiv) => {
+    const index = Array.prototype.indexOf.call(taskListDiv.children, taskDiv);
     toDos.splice(index, 1);
     updateListStorage(toDoListKey);
     // console.log(toDos);  
 
-    taskList.removeChild(taskElem);
+    taskListDiv.removeChild(taskDiv);
+}
+
+const deleteDoneTask = (taskListDiv, taskDiv) => {
+    const index = Array.prototype.indexOf.call(taskListDiv.children, taskDiv);
+    doneTasks.splice(index, 1);
+    updateListStorage(doneTasksListKey);
+
+    taskListDiv.removeChild(taskDiv);
 }
 
 populateListsFromStorage();
